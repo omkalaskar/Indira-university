@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Indira University Contest</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- (Unused right now, but harmless to leave) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        /* ---------- Global Styles & Theme Variables ---------- */
+        :root {
+            --blue-main: #1e88e5;
+            --blue-dark: #0d47a1;
+            --blue-soft: #f3f7ff;
+            --white: #ffffff;
+
+            /* Light theme defaults */
+            --bg-color: var(--blue-soft);
+            --text-color: var(--blue-dark);
+            --nav-bg: var(--white);
+            --card-bg: var(--white);
+            --card-text: var(--blue-main);
+            --card-border: var(--blue-main);
+            --subtitle-text: #3973b5;
+            --footer-text: #5c7fb0;
+            --social-bg: var(--white);
+            --social-border: var(--blue-main);
+            --social-icon: var(--blue-main);
+        }
+
+        /* Dark theme overrides */
+        body.dark {
+            --bg-color: #061e29;
+            --text-color: #e2e8f0;
+            --nav-bg: #071822;
+            --card-bg: #0b2533;
+            --card-text: #e0f2ff;
+            --card-border: #1e88e5;
+            --subtitle-text: #9fb4ff;
+            --footer-text: #94a3b8;
+            --social-bg: #071822;
+            --social-border: #1e88e5;
+            --social-icon: #e0f2ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                "Segoe UI", sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* ---------- Navbar ---------- */
+        .navbar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 5rem;
+            z-index: 100;
+        }
+
+        .indiralogo {
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--blue-main);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .logoimg:hover {
+            transform: scale(1.1);
+        }
+
+        .logoimg {
+            transition: 0.2s;
+        }
+
+        /* ---------- Main / Hero ---------- */
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 3.5rem 1.5rem 4rem;
+        }
+
+        .hero-inner {
+            width: 100%;
+            max-width: 960px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-title {
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .hero-subtitle {
+            font-size: 0.95rem;
+            max-width: 520px;
+            color: var(--subtitle-text);
+            margin-bottom: 3rem;
+        }
+
+        .logoimg{  
+
+            }
+
+        /* ---------- Quiz Cards Grid ---------- */
+        .quiz-grid {
+            width: 100%;
+            max-width: 720px;
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            justify-items: center;
+        }
+
+        .quiz-card {
+            background: var(--card-bg);
+            border-radius: 999px;
+            border: 2px solid var(--card-border);
+            width: 100%;
+            max-width: 240px;
+            height: 110px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: var(--card-text);
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            box-shadow: 0 8px 15px rgba(30, 136, 229, 0.12);
+            transition:
+                transform 0.18s ease,
+                box-shadow 0.18s ease,
+                background-color 0.18s ease,
+                color 0.18s ease,
+                border-color 0.18s ease;
+        }
+
+        /* Hover effects (only on devices that support hover) */
+        @media (hover: hover) {
+            .quiz-card:hover {
+                background: var(--blue-main);
+                color: var(--white);
+                transform: translateY(-6px);
+                box-shadow: 0 15px 30px rgba(13, 71, 161, 0.25);
+                border-color: transparent;
+            }
+        }
+
+        .quiz-card:active,
+        .quiz-card.clicked {
+            transform: translateY(-2px) scale(0.97);
+            box-shadow: 0 6px 14px rgba(13, 71, 161, 0.25);
+        }
+
+        .quiz-card:focus-visible {
+            outline: 3px solid var(--blue-dark);
+            outline-offset: 3px;
+        }
+
+        /* ---------- Footer ---------- */
+        .footer {
+            text-align: center;
+            padding: 0.75rem 1rem 1.25rem;
+            font-size: 0.75rem;
+            color: var(--footer-text);
+        }
+
+        /* ---------- Responsive Tweaks ---------- */
+        @media (max-width: 480px) {
+            
+            .theme_container {
+            position: absolute;
+            width: 100vw;
+            display: flex;
+            /* padding: 2rem; */
+            /* justify-content: flex-end; */
+            pointer-events: none;
+        }
+            .navbar {
+                height: 4rem;
+            }
+
+            .indiralogo {
+                height: 1.25rem;
+                letter-spacing: 0.06em;
+            }
+
+            .hero {
+                padding: 2.5rem 1.25rem 3rem;
+            }
+
+            .hero-title {
+                font-size: 1.9rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 2.25rem;
+            }
+
+            .quiz-card {
+                height: 90px;
+                font-size: 0.95rem;
+            }
+
+            .logoimg{
+                height: 0.2rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .hero {
+                padding: 4rem 2rem 4.5rem;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .quiz-card {
+                height: 110px;
+                font-size: 1.05rem;
+            }
+        }
+
+        /* ---------- Social icons ---------- */
+        .social-links {
+            margin-top: 2.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--social-bg);
+            border: 2px solid var(--social-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--social-icon);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            transition:
+                background-color 0.18s ease,
+                color 0.18s ease,
+                transform 0.18s ease,
+                box-shadow 0.18s ease,
+                border-color 0.18s ease;
+            box-shadow: 0 4px 10px rgba(30, 136, 229, 0.15);
+        }
+
+        @media (hover: hover) {
+            .social-icon:hover {
+                background: var(--blue-main);
+                color: var(--white);
+                border-color: transparent;
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(13, 71, 161, 0.25);
+            }
+        }
+
+        .social-icon:active {
+            transform: translateY(-1px) scale(0.97);
+            box-shadow: 0 5px 12px rgba(13, 71, 161, 0.25);
+        }
+
+        .logo {
+            height: 40px;
+        }
+
+        /* ---------- Theme toggle switch ---------- */
+        .theme_container {
+            position: absolute;
+            width: 100vw;
+            display: flex;
+            padding: 2rem;
+            /* justify-content: flex-end; */
+            pointer-events: none;
+        }
+
+        .theme_container label {
+            pointer-events: auto;
+        }
+
+        .toggle-checkbox {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .toggle-slot {
+            font-size: 10px;
+            position: relative;
+            height: 3.5em;
+            width: 7em;
+            border-radius: 10em;
+            background-color: white;
+            transition: background-color 250ms;
+        }
+
+        .toggle-checkbox:checked~.toggle-slot {
+            background-color: #374151;
+        }
+
+        .toggle-button {
+            transform: translate(0.3em, 0.25em);
+            position: absolute;
+            height: 3em;
+            width: 3em;
+            border-radius: 50%;
+            background-color: #ffeccf;
+            box-shadow: inset 0px 0px 0px 0.75em #ffbb52;
+            transition:
+                background-color 250ms,
+                border-color 250ms,
+                transform 500ms cubic-bezier(.26, 2, .46, .71);
+        }
+
+        .toggle-checkbox:checked~.toggle-slot .toggle-button {
+            background-color: #485367;
+            box-shadow: inset 0px 0px 0px 0.75em white;
+            transform: translate(3.65em, 0.25em);
+        }
+
+        .sun-icon {
+            position: absolute;
+            height: 6em;
+            width: 6em;
+            color: #ffbb52;
+        }
+
+        .sun-icon-wrapper {
+            position: absolute;
+            height: 6em;
+            width: 6em;
+            opacity: 1;
+            transform: translate(2em, 2em) rotate(15deg);
+            transform-origin: 50% 50%;
+            transition: opacity 150ms,
+                transform 500ms cubic-bezier(.26, 2, .46, .71);
+        }
+
+        .toggle-checkbox:checked~.toggle-slot .sun-icon-wrapper {
+            opacity: 0;
+            transform: translate(3em, 2em) rotate(0deg);
+        }
+
+        .moon-icon {
+            position: absolute;
+            height: 6em;
+            width: 6em;
+            color: white;
+        }
+
+        .moon-icon-wrapper {
+            position: absolute;
+            height: 6em;
+            width: 6em;
+            opacity: 0;
+            transform: translate(11em, 2em) rotate(0deg);
+            transform-origin: 50% 50%;
+            transition: opacity 150ms,
+                transform 500ms cubic-bezier(.26, 2.5, .46, .71);
+        }
+
+        .toggle-checkbox:checked~.toggle-slot .moon-icon-wrapper {
+            opacity: 1;
+            transform: translate(2em, 2em) rotate(-15deg);
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- Navbar with logo and theme toggle -->
+    <header class="navbar">
+        <div class="indiralogo">
+            <img src="images.png" style="height: 3rem;" class="logoimg" alt="Logo">
+        </div>
+
+        <div class="theme_container">
+            <!-- From Uiverse.io by JkHuger -->
+            <label>
+                <input class="toggle-checkbox" type="checkbox" onchange="themechange()">
+                <div class="toggle-slot">
+                    <div class="sun-icon-wrapper">
+                        <div class="sun-icon">☀️</div>
+                    </div>
+                    <div class="toggle-button"></div>
+                    <div class="moon-icon-wrapper">
+                        <div class="moon-icon">🌙</div>
+                    </div>
+                </div>
+            </label>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="hero">
+        <div class="hero-inner">
+            <h1 class="hero-title">Quiz for One<br />Quiz for All</h1>
+            <p class="hero-subtitle">
+                Pick a quiz and challenge yourself. Simple, fast, and fun for everyone.
+            </p>
+
+            <section class="quiz-grid">
+                <button class="quiz-card" data-quiz="1">Quiz 1</button>
+                <button class="quiz-card" data-quiz="2">Quiz 2</button>
+                <button class="quiz-card" data-quiz="3">Quiz 3</button>
+            </section>
+        </div>
+    </main>
+
+    <!-- Social media icons -->
+    <footer class="footer">
+        <div class="social-links">
+            <a href="https://www.instagram.com/indirauniversitypune/" target="_blank" class="social-icon" aria-label="Visit our Facebook">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a target="_blank"  href="https://indirauniversity.edu.in/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnoZDOnS1eljbgawEaQiqYPXNuWSNpNsYATgii3QyEmDrImJqL-vuw5iZIk1I_aem_k4AQ98gM690FBMLR6vxpfQ" class="social-icon" aria-label="Visit our Twitter">
+                <i class="fa-solid fa-link"></i>
+            </a>
+            <a target="_blank"  href="https://www.facebook.com/IndiraGroup/" class="social-icon" aria-label="Visit our Instagram">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+            <a target="_blank"  href="https://in.linkedin.com/company/indirauniversity" class="social-icon" aria-label="Visit our LinkedIn">
+                <i class="fa-brands fa-linkedin"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        const themeToggle = document.querySelector(".toggle-checkbox");
+
+        // Initialize theme on page load
+        (function initTheme() {
+            const savedTheme = localStorage.getItem("theme");
+            const prefersDark = window.matchMedia &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+            const useDark = savedTheme
+                ? savedTheme === "dark"
+                : prefersDark;
+
+            document.body.classList.toggle("dark", useDark);
+            if (themeToggle) {
+                themeToggle.checked = useDark;
+            }
+        })();
+
+        // Called when the checkbox changes
+        function themechange() {
+            const isDark = themeToggle.checked;
+            document.body.classList.toggle("dark", isDark);
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+        }
+
+        // Quiz card click effects
+        const cards = document.querySelectorAll(".quiz-card");
+
+        cards.forEach((card) => {
+            card.addEventListener("click", () => {
+                const quizNumber = card.dataset.quiz;
+
+                card.classList.add("clicked");
+                setTimeout(() => {
+                    card.classList.remove("clicked");
+                }, 150);
+
+                alert(`You clicked Quiz ${quizNumber}`);
+            });
+        });
+    </script>
+</body>
+
+</html>
